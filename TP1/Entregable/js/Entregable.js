@@ -5,6 +5,14 @@ var context = canvas.getContext('2d');
 var fileInput = document.getElementById('boton-cargar-archivo');
 var imageData;
 var imageDataCopia;
+var imageDataSinPintar;
+var click = false;
+var pintando = true;
+var colorPintura;
+var lastX = -1;
+var lastY = -1;
+var image = new Image();
+
 
 fileInput.onchange = function(event) {
       var url = window.URL.createObjectURL(event.target.files[0]);
@@ -13,7 +21,6 @@ fileInput.onchange = function(event) {
 
 
 function cargarImagen(src) {
-      var image = new Image();
       image.src = src;
 //      console.log(image);
       image.onload = drawImage;
@@ -59,6 +66,25 @@ function clonarImageData(){
       var ArregloCopia = new Uint8ClampedArray(imageData.data);
       imageDataCopia.data.set(ArregloCopia);
       return imageDataCopia;
+}
+
+function clonarImagenSinPintar(){
+      var ArregloCopia = new Uint8ClampedArray(imageDataCopia.data);
+      imageDataSinPintar.data.set(ArregloCopia);
+      return imageDataSinPintar;
+}
+
+function limpiar(){
+      let im = clonarImagenSinPintar();
+      for (x=0; x < width; x++){
+        for (y=0; y< height; y++){
+          var red = getRed(im, x, y);
+          var green = getGreen(im, x, y);
+          var blue = getBlue(im, x, y);
+          setPixel(im, x, y, red, green, blue, 255);
+        }
+      }
+      context.putImageData(im,0,0);
 }
 
 function negativo(){
@@ -230,7 +256,6 @@ canvas.addEventListener("mouseup",function(){
 })
 
 canvas.addEventListener("mousemove",function(event){
-    var colorPintura;
     if(click){
         if(pintando){
             colorPintura = "#ff0000";
@@ -245,21 +270,20 @@ canvas.addEventListener("mousemove",function(event){
 
 function pintar(event) {
 
-    ctx.lineWidth = 6;
-
-    ctx.strokeStyle = colorPintura ;
-    ctx.lineCap = "round";
+    context.lineWidth = 6;
+    context.strokeStyle = colorPintura ;
+    context.lineCap = "round";
     let x = event.layerX - 10;
     let y = event.layerY;
 
-    ctx.beginPath();
+    context.beginPath();
     if(lastX != -1){
-        ctx.moveTo(lastX, lastY);
+        context.moveTo(lastX, lastY);
     }else{
-        ctx.moveTo(x,y);
+        context.moveTo(x,y);
     }
-    ctx.lineTo(x, y);
-    ctx.stroke();
+    context.lineTo(x, y);
+    context.stroke();
 
     lastX = x;
     lastY = y;
