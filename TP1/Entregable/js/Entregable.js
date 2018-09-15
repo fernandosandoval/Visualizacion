@@ -5,7 +5,7 @@ var context = canvas.getContext('2d');
 var fileInput = document.getElementById('boton-cargar-archivo');
 var imageData;
 var imageDataCopia;
-var imageDataSinPintar;
+var imageDataQueEstaAhora;
 var click = false;
 var pintando = true;
 var colorPintura;
@@ -33,6 +33,7 @@ function drawImage(event) {
       context.drawImage(image, 0, 0, width, height);
       imageData = context.getImageData(0, 0, width, height);
       imageDataCopia = context.getImageData(0, 0, width, height);
+      imageDataQueEstaAhora = context.getImageData(0, 0, width, height);
     }
 
 
@@ -68,24 +69,6 @@ function clonarImageData(){
       return imageDataCopia;
 }
 
-function clonarImagenSinPintar(){
-      var ArregloCopia = new Uint8ClampedArray(imageDataCopia.data);
-      imageDataSinPintar.data.set(ArregloCopia);
-      return imageDataSinPintar;
-}
-
-function limpiar(){
-      let im = clonarImagenSinPintar();
-      for (x=0; x < width; x++){
-        for (y=0; y< height; y++){
-          var red = getRed(im, x, y);
-          var green = getGreen(im, x, y);
-          var blue = getBlue(im, x, y);
-          setPixel(im, x, y, red, green, blue, 255);
-        }
-      }
-      context.putImageData(im,0,0);
-}
 
 function negativo(){
      console.log("neg");
@@ -101,7 +84,7 @@ function negativo(){
      context.putImageData(imageDataCopia,0,0);
    }
 
-   function imagenOriginal(){
+function imagenOriginal(){
         console.log("original");
         for (x=0; x < width; x++){
           for (y=0; y< height; y++){
@@ -113,6 +96,19 @@ function negativo(){
         }
         context.putImageData(imageData,0,0);
       }
+
+function limpiar(){
+           console.log("limpia");
+           for (x=0; x < width; x++){
+             for (y=0; y< height; y++){
+               var red = getRed(imageDataCopia, x, y);
+               var green = getGreen(imageDataCopia, x, y);
+               var blue = getBlue(imageDataCopia, x, y);
+               setPixel(imageDataCopia, x, y, red, green, blue, 255);
+             }
+           }
+           context.putImageData(imageDataCopia,0,0);
+         }
 
 function escalaGrises(){
      console.log("gris");
@@ -269,11 +265,11 @@ canvas.addEventListener("mousemove",function(event){
 });
 
 function pintar(event) {
-
+    console.log("pintando");
     context.lineWidth = 6;
     context.strokeStyle = colorPintura ;
     context.lineCap = "round";
-    let x = event.layerX - 10;
+    let x = event.layerX - 5;
     let y = event.layerY;
 
     context.beginPath();
