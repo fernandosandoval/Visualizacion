@@ -4,14 +4,16 @@ var canvas = document.getElementById('canvas');
 var context = canvas.getContext('2d');
 var fileInput = document.getElementById('boton-cargar-archivo');
 var imageData;
+var imagenOriginal;
 var imageDataCopia;
-var imageDataQueEstaAhora;
+//var imageDataQueEstaAhora;
 var click = false;
 var pintando = true;
 var colorPintura;
 var lastX = -1;
 var lastY = -1;
 var image = new Image();
+var imageCopy = new Image();
 
 
 fileInput.onchange = function(event) {
@@ -22,6 +24,7 @@ fileInput.onchange = function(event) {
 
 function cargarImagen(src) {
       image.src = src;
+      imageCopy.src = src;
 //      console.log(image);
       image.onload = drawImage;
 }
@@ -29,11 +32,13 @@ function cargarImagen(src) {
 
 function drawImage(event) {
       var image = event.target;
+      var imagenOriginal = event.target;
 //      console.log("imagen",image);
       context.drawImage(image, 0, 0, width, height);
       imageData = context.getImageData(0, 0, width, height);
       imageDataCopia = context.getImageData(0, 0, width, height);
-      imageDataQueEstaAhora = context.getImageData(0, 0, width, height);
+  //    imageDataQueEstaAhora = context.getImageData(0, 0, width, height);
+      // imageDataOriginal = clonarOriginal();
     }
 
 
@@ -64,10 +69,16 @@ function getBlue (imageData, x, y){
    }
 
 function clonarImageData(){
-      var ArregloCopia = new Uint8ClampedArray(imageData.data);
+      let ArregloCopia = new Uint8ClampedArray(imageData.data);
       imageDataCopia.data.set(ArregloCopia);
       return imageDataCopia;
 }
+
+// function clonarOriginal(){
+//       let OtroArregloCopia = new Uint8ClampedArray(imageData.data);
+//       imageDataOriginal.data.set(OtroArregloCopia);
+//       return imageDataOriginal;
+// }
 
 
 function negativo(){
@@ -86,29 +97,19 @@ function negativo(){
 
 function imagenOriginal(){
         console.log("original");
-        for (x=0; x < width; x++){
-          for (y=0; y< height; y++){
-            var red = getRed(imageData, x, y);
-            var green = getGreen(imageData, x, y);
-            var blue = getBlue(imageData, x, y);
-            setPixel(imageData, x, y, red, green, blue, 255);
-          }
-        }
+    // //    imageDataOriginal = clonarOriginal();
+    //     for (x=0; x < width; x++){
+    //       for (y=0; y< height; y++){
+    //         var red = getRed(imageData, x, y);
+    //         var green = getGreen(imageData, x, y);
+    //         var blue = getBlue(imageData, x, y);
+    //         setPixel(imageDataOriginal, x, y, red, green, blue, 255);
+    //       }
+    //     }
         context.putImageData(imageData,0,0);
       }
 
-function limpiar(){
-           console.log("limpia");
-           for (x=0; x < width; x++){
-             for (y=0; y< height; y++){
-               var red = getRed(imageDataCopia, x, y);
-               var green = getGreen(imageDataCopia, x, y);
-               var blue = getBlue(imageDataCopia, x, y);
-               setPixel(imageDataCopia, x, y, red, green, blue, 255);
-             }
-           }
-           context.putImageData(imageDataCopia,0,0);
-         }
+
 
 function escalaGrises(){
      console.log("gris");
@@ -224,14 +225,32 @@ function guardar() {
 
 let dibuja = document.getElementById("boton-dibujar");
 let borra = document.getElementById("boton-borrar");
+let limpia = document.getElementById("boton-limpiar");
 
 dibuja.addEventListener("click", function(){
+//    let imagenActual = canvas.getContext('2d');
+
     pintando = true;
 });
 
 borra.addEventListener("click", function(){
+
+    pintando = false;   // borrar dibujando la imagen anterior
+});
+
+limpia.addEventListener("click", function(){
+    let ca = document.getElementById('canvas');
+    let co = ca.getContext('2d');
+    console.log("limpia");
+    ca.width = ca.width;
+    console.log("limpia1");
+    co.clearRect(0, 0, width, height);
+    console.log("limpia2");
+    co.drawImage(imageCopy, 0, 0, width, height);
+//    co.drawImage(imagenOriginal, 0, 0, width, height);
     pintando = false;
 });
+
 
 canvas.addEventListener("mousedown",function(){
     click = true;
@@ -269,7 +288,7 @@ function pintar(event) {
     context.lineWidth = 6;
     context.strokeStyle = colorPintura ;
     context.lineCap = "round";
-    let x = event.layerX - 5;
+    let x = event.layerX - 1;
     let y = event.layerY;
 
     context.beginPath();
