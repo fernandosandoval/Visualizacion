@@ -263,43 +263,51 @@ canvas.addEventListener("mouseup",function(){
     image.src = canvas.toDataURL();
 })
 
-canvas.addEventListener("mouseup",function(){
-    click = false;
-    lastX = -1;
-    lastY = -1;
-    image.src = canvas.toDataURL();
-})
-
 canvas.addEventListener("mousemove",function(event){
     if(click){
         if(pintando){
             colorPintura = "#ff0000";
             pintar(event);
-
-        }else if(!pintando){
-                colorPintura = "#ffffff";          // preguntar como hacer para volver al estado anterior
-            pintar(event);
-        }
+          }
+        // } else if(!pintando){
+        //         colorPintura = "#FFffffff";          // preguntar como hacer para volver al estado anterior
+        //     pintar(event);
+        // }
     }
 });
 
-function pintar(event) {
-    console.log("pintando");
-    context.lineWidth = 6;
-    context.strokeStyle = colorPintura ;
-    context.lineCap = "round";
-    let x = event.layerX - 1;
-    let y = event.layerY;
+function getMousePos(canvas, event) {
+        var rect = canvas.getBoundingClientRect();
+        scaleX = canvas.width / rect.width,
+        scaleY = canvas.height / rect.height;
+        return {
+           x: (event.clientX - rect.left) * scaleX,
+           y: (event.clientY - rect.top) * scaleY
+               };
+      }
 
-    context.beginPath();
-    if(lastX != -1){
-        context.moveTo(lastX, lastY);
-    }else{
-        context.moveTo(x,y);
-    }
-    context.lineTo(x, y);
-    context.stroke();
+  function pintar(event) {
+      console.log("pintando");
+      context.lineWidth = 6;
+      context.strokeStyle = colorPintura ;
+      context.lineCap = "round";
+      var pos = getMousePos(canvas, event);
+      console.log(pos.x);
+      console.log(pos.y);
+        // let x = event.pageX - canvas.offsetLeft;
+        // let y = event.pageY - canvas.offsetTop;
+        // console.log(event.pageX - canvas.offsetLeft);
+        // console.log(event.pageY - canvas.offsetTop);
 
-    lastX = x;
-    lastY = y;
-}
+      context.beginPath();
+      if(lastX != -1){
+          context.moveTo(lastX, lastY);
+      }else{
+          context.moveTo(pos.x,pos.y);
+      }
+      context.lineTo(pos.x, pos.y);
+      context.stroke();
+      context.closePath();
+      lastX = pos.x;
+      lastY = pos.y;
+  }
