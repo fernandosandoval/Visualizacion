@@ -14,7 +14,13 @@ var lastX = -1;
 var lastY = -1;
 var image = new Image();
 var imageCopy = new Image();
-
+var p1 = 0;
+var p2 = 0;
+var p3 = 0;
+var er = 0;
+var eg = 0;
+var eb = 0;
+var iBlurRate = 0;
 
 fileInput.onchange = function(event) {
       var url = window.URL.createObjectURL(event.target.files[0]);
@@ -178,35 +184,123 @@ function saturacion() {
   	context.putImageData(imageDataCopia, 0, 0);
 }
 
-function blur(){
+function resetToBlur() {
+    console.log("reset to blur");
+    p1 = 1;
+    p2 = 1;
+    p3 = 1;
+    er = eg = eb = 0;
+    iBlurRate = 1;
+    blur();
+}
+
+function Color() {
     imageDataCopia = clonarImageData();
-    console.log("blur");
-    var valR = 0;
-    var valG = 0;
-    var valB = 0;
-    var arr = [1,1,1,1,1,1,1,1,1];
-
-    for (x=0; x < width; x++){
-        for (y=0; y < height; y++){
-            valR = multiplicarColor(imageDataCopia,arr,getRed)/9;
-            valG = multiplicarColor(imageDataCopia,arr,getGreen)/9;
-            valB = multiplicarColor(imageDataCopia,arr,getBlue)/9;
-            setPixel(imageData, x, y, valR,valG,valB, 255);
-        }
-
+    var data = imageDataCopia.data;
+    for (var i = 0, n = data.length; i < n; i += 4) {
+        data[i]   = data[i]*p1+er; // red
+        data[i+1] = data[i+1]*p2+eg; // green
+        data[i+2] = data[i+2]*p3+eb; // blue
     }
     context.putImageData(imageDataCopia, 0, 0);
 }
 
-
-function multiplicarColor(imageData,arrPos,getColor){
-    console.log("multi");
-    var valor = (getColor(imageData,x-1,y-1)*arrPos[0] +  getColor(imageData,x-1,y)*arrPos[1] +  getColor(imageData,x-1,y+1)*arrPos[2] +
-                 getColor(imageData,x,y-1)*arrPos[3] + getColor(imageData,x,y)*arrPos[4]  + getColor(imageData,x,y+1)*arrPos[5] +
-                 getColor(imageData,x+1,y-1)*arrPos[6] +  getColor(imageData,x+1,y)*arrPos[7] +  getColor(imageData,x+1,y+1)*arrPos[8]);
-
-    return valor;
+function blur() {
+    console.log("blur");
+    imageDataCopia = clonarImageData();
+    console.log(iBlurRate);
+    var data = imageDataCopia.data;
+    for (br = 0; br < iBlurRate; br += 1) {
+        for (var i = 0, n = data.length; i < n; i += 4) {
+            iMW = 4 * width;
+            iSumOpacity = iSumRed = iSumGreen = iSumBlue = 0;
+            iCnt = 0;
+            // data of close pixels (from all 8 surrounding pixels)
+            aCloseData = [
+                i - iMW - 4, i - iMW, i - iMW + 4, // top pixels
+                i - 4, i + 4, // middle pixels
+                i + iMW - 4, i + iMW, i + iMW + 4 // bottom pixels
+            ];
+            // calculating Sum value of all close pixels
+            for (e = 0; e < aCloseData.length; e += 1) {
+                if (aCloseData[e] >= 0 && aCloseData[e] <= data.length - 3) {
+                    iSumOpacity += data[aCloseData[e]];
+                    iSumRed += data[aCloseData[e] + 1];
+                    iSumGreen += data[aCloseData[e] + 2];
+                    iSumBlue += data[aCloseData[e] + 3];
+                    iCnt += 1;
+                }
+            }
+            // apply average values
+            data[i] = (iSumOpacity / iCnt)*p1+er;
+            data[i+1] = (iSumRed / iCnt)*p2+eg;
+            data[i+2] = (iSumGreen / iCnt)*p3+eb;
+            data[i+3] = (iSumBlue / iCnt);
+        }
+    }
+    context.putImageData(imageDataCopia, 0, 0);
 }
+
+function contraste (rango) {
+    console.log("funcion contraste");
+    imageDataCopia = clonarImageData();
+    pixels = imageDataCopia.data,
+    numPixels = imageDataCopia.width * imageDataCopia.height,
+    //var factor;
+
+    rango || ( contraste = 100 );  // valor por defecto
+
+    var factor = ( 259 * ( rango + 255 ) ) / ( 255 * ( 259 - rango ) );
+
+    for ( var i = 0; i < numPixels; i++ ) {
+        var r = pixels[ i * 4 ];
+        var g = pixels[ i * 4 + 1 ];
+        var b = pixels[ i * 4 + 2 ];
+
+        pixels[ i * 4 ] = factor * ( r - 128 ) + 128;
+        pixels[ i * 4 + 1 ] = factor * ( g - 128 ) + 128;
+        pixels[ i * 4 + 2 ] = factor * ( b - 128 ) + 128;
+    }
+
+    context.putImageData(imageDataCopia, 0, 0 );
+};
+
+botonContraste();
+
+function botonContraste(){
+    console.log("modo contraste");
+    var contrast = document.getElementById("boton-contraste");
+    contrast.addEventListener("click", function(){
+        console.log("modo contraste2");
+        var rangoC = document.getElementById("rangoContraste");
+        rangoC.addEventListener("change", function(){
+            console.log("cambia rango");
+            contraste(this.value-49.7);
+
+        });
+    });
+}
+
+botonBlur();
+
+function botonBlur(){
+    console.log("modo blur");
+    var blurBoton = document.getElementById("boton-blur");
+    blurBoton.addEventListener("click", function(){
+        console.log("modo blur2");
+        var rango = document.getElementById("rangoBlur");
+        rango.addEventListener("change", function(){
+            console.log("cambia rango blur");
+            console.log(this.value);
+            iBlurRate = this.value;
+            if (iBlurRate == 0)
+                imagenOriginal();
+            else
+                blur();
+        });
+    });
+}
+
 
 
 function guardar() {
@@ -224,7 +318,7 @@ function guardar() {
 // funciones para modo paint
 
 let dibuja = document.getElementById("boton-dibujar");
-let borra = document.getElementById("boton-borrar");
+//let borra = document.getElementById("boton-borrar");
 let limpia = document.getElementById("boton-limpiar");
 
 dibuja.addEventListener("click", function(){
@@ -233,10 +327,6 @@ dibuja.addEventListener("click", function(){
     pintando = true;
 });
 
-borra.addEventListener("click", function(){
-
-    pintando = false;   // borrar dibujando la imagen anterior
-});
 
 limpia.addEventListener("click", function(){
     let ca = document.getElementById('canvas');
