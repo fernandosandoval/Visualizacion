@@ -1,0 +1,23 @@
+Referencias al codigo utilizado en esta entrega
+funciones basicas:
+http://www.etnassoft.com/2016/11/03/manipulacion-de-imagenes-con-javascript-parte-1/
+
+funcion binarizar
+https://stackoverflow.com/questions/45152358/best-rgb-combination-to-convert-image-into-black-and-white-threshold
+
+mas funciones
+https://www.html5rocks.com/en/tutorials/canvas/imagefilters/
+
+blur:
+https://www.script-tutorials.com/html5-canvas-image-effects-app-adding-blur/
+
+pintar en canvas
+https://www.lawebdelprogramador.com/codigo/JavaScript/v4444-Paint-en-Canvas-JS.html
+https://www.youtube.com/watch?v=r4MkwQi-4rE
+
+limpiar el canvas
+http://lineadecodigo.com/html5/limpiar-contenido-de-un-canvas-en-html5/
+
+ubicacion del mouse en el canvas
+https://stackoverflow.com/questions/17130395/real-mouse-position-in-canvas/33063222
+
