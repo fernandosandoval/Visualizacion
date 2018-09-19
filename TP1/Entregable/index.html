@@ -23,7 +23,7 @@
   </div>
   <div class="container">
     <div class="row">
-      <div class="col-md-6 text-center">
+      <div class="col-sm-6 col-md-12 text-center">
         <canvas id="canvas" width="520" height="400">Sorry, your browser doesn't support the &lt;canvas&gt; element.</canvas>
               <div class="caption">
                   <p>Imagen</p>
@@ -71,16 +71,19 @@
         </a>
      </div>
 
-     <div class="form-group">
-				<label for="rangoContraste">Rango de Contraste</label>
-				<input id="rangoContraste" class="form-control-range" type="range" min="-150" max="200" step="25" value="25">
-		 </div>
+     <div class = "col-sm-4 col-md-6 text-center">
+         <div class="form-group">
+    				<label for="rangoContraste">Rango de Contraste</label>
+    				<input id="rangoContraste" class="form-control-range" type="range" min="-150" max="200" step="25" value="25">
+    		 </div>
+    </div>
 
+    <div class = "col-sm-4 col-md-6 text-center">
      <div class="form-group">
 				<label for="rangoBlur">Rango de Blur</label>
 				<input id="rangoBlur" class="form-control-range" type="range" min="0" max="4" step="1" value="2">
 		 </div>
-
+   </div>
      <div class = "col-sm-4 col-md-2 text-center">
         <a href = "#" class = "thumbnail">
          <button type="button" id="boton-original" class="btn btn-basic" onclick="imagenOriginal()">Imagen Original</button>
@@ -95,8 +98,26 @@
          <button type="button" id="boton-limpiar" class="btn btn-primary">Limpiar</button>
      </div>
 
-
-
+     <div class = "col-sm-4 col-md-3 text-center">
+       <p>Color del trazo</p>
+           <select id="colores" name="colores">
+               <option value="white">Blanco</option>
+               <option value="black">Negro</option>
+               <option value="red">Rojo</option>
+               <option value="blue">Azul</option>
+               <option value="green">Verde</option>
+          </select>
+    </div>
+    <div class = "col-sm-4 col-md-3 text-center">
+      <p>Tamaño del trazo</p>
+          <select id="trazo" name="trazo">
+              <option value="2">Muy fino</option>
+              <option value="5">Fino</option>
+              <option value="10">Normal</option>
+              <option value="15">Grueso</option>
+              <option value="20">Muy grueso</option>
+         </select>
+   </div>
    </div>
   </div>
 </body>
