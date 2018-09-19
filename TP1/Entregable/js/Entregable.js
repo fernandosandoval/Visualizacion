@@ -287,11 +287,9 @@ function botonBlur(){
     console.log("modo blur");
     var blurBoton = document.getElementById("boton-blur");
     blurBoton.addEventListener("click", function(){
-        console.log("modo blur2");
+      //  console.log("modo blur2");
         var rango = document.getElementById("rangoBlur");
         rango.addEventListener("change", function(){
-            console.log("cambia rango blur");
-            console.log(this.value);
             iBlurRate = this.value;
             if (iBlurRate == 0)
                 imagenOriginal();
@@ -356,7 +354,7 @@ canvas.addEventListener("mouseup",function(){
 canvas.addEventListener("mousemove",function(event){
     if(click){
         if(pintando){
-            colorPintura = "#ff0000";
+            colorPintura = document.getElementById('colores').value;
             pintar(event);
           }
         // } else if(!pintando){
@@ -378,7 +376,7 @@ function getMousePos(canvas, event) {
 
   function pintar(event) {
       console.log("pintando");
-      context.lineWidth = 6;
+      context.lineWidth = document.getElementById('trazo').value;;
       context.strokeStyle = colorPintura ;
       context.lineCap = "round";
       var pos = getMousePos(canvas, event);
