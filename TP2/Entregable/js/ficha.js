@@ -9,6 +9,7 @@ class Ficha{
     	}
 
     	draw(ctx) {
+        console.log(this.color);
     		ctx.fillStyle = this.color;
     		ctx.beginPath();
     		ctx.arc(this.posX, this.posY, this.radio, 0, Math.PI*2);
