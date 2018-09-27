@@ -37,16 +37,16 @@ function dibujarTablero(){
       ctx.fillStyle = "blue";
       ctx.fillRect(225,160,450,380);
       let id = 1;
-      for (fila=1; fila<=7; fila++){
-          for (col=1; col<=6; col++){
+      for (fila=1; fila<=6; fila++){
+          for (col=1; col<=7; col++){
                 casillero = new Casillero (posx, posy,'white', 25, id);
-                posy += 60;
+                posx += 60;
                 arregloCasilleros.push(casillero);
                 casillero.draw(ctx);
                 id++;
               }
-          posy = 200;
-          posx+= 60;
+          posy += 60;
+          posx = 270;
       }
 
 }
@@ -224,6 +224,7 @@ function verificarUbicacionFicha(posActual){
 function soltandoMouse(e){
           e.preventDefault();
           e.stopPropagation();
+          var colorFicha;
           if (dragok==true) {
                 const posActual = {
                   x: startX,
@@ -234,22 +235,38 @@ function soltandoMouse(e){
                 if (columnaActual != 0){
                    console.log("puse la ficha en la columna ", columnaActual);
                    console.log("indice del arreglo:", indice);
-
-
-                   console.log("color de la ficha: ", colorFicha);
                    if (jugador1){
-                           var colorFicha = arregloFichasJug1[indice].getColor();
+                           colorFicha = arregloFichasJug1[indice].getColor();
+                           console.log("color de la ficha: ", colorFicha);
                            arregloFichasJug1[indice].setPosX = initX;
                            arregloFichasJug1[indice].setPosY = initY;
                            delete arregloFichasJug1[indice];
                          }
                    else {
-                           var colorFicha = arregloFichasJug2[indice].getColor();
+                           colorFicha = arregloFichasJug2[indice].getColor();
                            arregloFichasJug2[indice].setPosX = initX;
                            arregloFichasJug2[indice].setPosY = initY;
-                           delete arregloFichasJug2[indice];
+
                    }
-                   insertarEnColumna(columnaActual, colorFicha);
+                   let estado = insertarEnColumna(columnaActual, colorFicha);
+                   if(!estado){
+                     if(jugador1){
+                       arregloFichasJug1[indice].setPosX(initX);
+                       arregloFichasJug1[indice].setPosY(initY);
+                     }
+                     else{
+                       arregloFichasJug2[indice].setPosX(initX);
+                       arregloFichasJug2[indice].setPosY(initY);
+                     }
+                   }
+                   else{
+                     if (jugador1) {
+                         delete arregloFichasJug1[indice];
+                     }
+                     else{
+                         delete arregloFichasJug2[indice];
+                     }
+                   }
                    redibujarAreaSobreTablero();
                    redibujarTablero();
                    columnaActual = 0;
