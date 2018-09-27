@@ -22,6 +22,7 @@ var maxY;
 var columnaActual;
 var initX;
 var initY;
+var indice = 0;
 
 canvas.onmousedown = presionandoMouse;
 canvas.onmouseup = soltandoMouse;
@@ -35,13 +36,14 @@ dibujarColumnas();
 function dibujarTablero(){
       ctx.fillStyle = "blue";
       ctx.fillRect(225,160,450,380);
-
+      let id = 1;
       for (fila=1; fila<=7; fila++){
           for (col=1; col<=6; col++){
-                casillero = new Casillero (posx, posy,'white', 25);
+                casillero = new Casillero (posx, posy,'white', 25, id);
                 posy += 60;
                 arregloCasilleros.push(casillero);
                 casillero.draw(ctx);
+                id++;
               }
           posy = 200;
           posx+= 60;
@@ -54,7 +56,7 @@ function dibujarColumnas(){
       posx = 240;
       posy = 100;
       for (col=1; col<=7; col++){
-                columna = new Columna (posx, posy, 59, 60, col);
+                columna = new AreaSobreColumna (posx, posy, 59, 60, col);
       //          console.log(columna.name)
                 posx += 60;
                 arregloColumnas.push(columna);
@@ -160,9 +162,27 @@ function presionandoMouse(e){
                 }
               });
 
+              arregloCasilleros.forEach(circle => {
+                let j = 0;
+                if (isIntersect(pos, circle)) {
+                  console.log('ud esta presionando el casillero numero ', circle.id, ' de color ', circle.color, 'y posicion en arreglo ', j);
+                }
+                j++;
+              });
+
               arregloColumnas.forEach(column => {
                 if (isInsideColumn(pos, column)) {
                   console.log('ud esta haciendo click sobre la columna ', column.name );
+                }
+              });
+
+              arregloFichasJug2.forEach(circle => {
+                if (isIntersect(pos, circle)) {
+                  console.log('ud esta presionando una ficha roja');
+                  initX = pos.x;
+                  initY = pos.y;
+                  dragok=true;
+                  circle.dragging=true;
                 }
               });
 
@@ -196,7 +216,13 @@ function soltandoMouse(e){
                 console.log(columnaActual);
                 if (columnaActual != 0){
                    console.log("puse la ficha en la columna ", columnaActual);
-                   arregloFichasJug1.pop();
+                   console.log("indice del arreglo:", indice);
+                   let colorFicha = arregloFichasJug1[indice].getColor();
+                   console.log("color de la ficha: ", colorFicha);
+                   arregloFichasJug1[indice].setPosX = initX;
+                   arregloFichasJug1[indice].setPosY = initY;
+                   delete arregloFichasJug1[indice];
+                   insertarEnColumna(columnaActual, colorFicha);
                    // redibujo area sobre las columnas
                    ctx.clearRect (200,90,450,70);
                    ctx.fillStyle = "white";
@@ -214,11 +240,15 @@ function soltandoMouse(e){
               // ponemos todas las variables de drag en false
           dragok = false;
           for (var i=0; i<arregloFichasJug1.length; i++){
+                    if (arregloFichasJug1[i]){
                       arregloFichasJug1[i].dragging = false;
-                  }
+                    }
+          }
           for (var i=0; i<arregloFichasJug2.length; i++){
+                   if (arregloFichasJug2[i]){
                       arregloFichasJug2[i].dragging = false;
-                          }
+                  }
+          }
 
 }
 
@@ -243,24 +273,29 @@ function moviendoMouse(e){
           // muevo cada ficha que tenga dragging en true
 
           for(var i=0; i<arregloFichasJug1.length; i++){
+            if (arregloFichasJug1[i]){
               var f1 = arregloFichasJug1[i];
               if(f1.dragging){
+                  indice = i;
                   f1.posX+=dx;
                   f1.posY+=dy;
                   redibujar(ctx);
               }
+            }
           }
 
           for(var i=0; i<arregloFichasJug2.length; i++){
+            if (arregloFichasJug2[i]){
               var f2 = arregloFichasJug2[i];
               if(f2.dragging){
+                  indice = i;
                   f2.posX+=dx;
                   f2.posY+=dy;
                   redibujar(ctx);
               }
+            }
           }
 
-        //  if ()
 
           // seteo nueva posicion inicial
           startX = pos.x;
@@ -273,8 +308,10 @@ function redibujar(ctx){
   limpiar();
   // redibujo fichas amarillas
   for(var i=0; i<arregloFichasJug1.length; i++){
+    if (arregloFichasJug1[i]){
       var f = arregloFichasJug1[i];
       f.draw(ctx);
+    }
   }
   // redibujo fichas rojas
   for(var i=0; i<arregloFichasJug2.length; i++){

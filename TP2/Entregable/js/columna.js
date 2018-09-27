@@ -1,4 +1,4 @@
-class Columna{
+class AreaSobreColumna{
 
     	constructor(x, y, width, height, name){
     		this.posX = x;

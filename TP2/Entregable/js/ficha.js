@@ -24,5 +24,16 @@ class Ficha{
                       this.radio * 2 + 2, this.radio * 2 + 2);
       }
 
+      setPosX(pos){
+        this.posX = pos;
+      }
+
+      setPosY(pos){
+        this.posY = pos;
+      }
+
+      getColor(){
+        return this.color;
+      }
 
 }

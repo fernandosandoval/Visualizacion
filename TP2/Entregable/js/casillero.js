@@ -1,15 +1,13 @@
 class Casillero{
 
-    	constructor(x, y, color, radio){
+    	constructor(x, y, color, radio, id){
     		this.posX = x;
     		this.posY = y;
     		this.color = color;
         this.radio = radio;
+        this.id = id;
     	}
 
-      posicion(){
-
-      }
 
     	draw(ctx) {
         console.log("dibuja casillero");
@@ -20,5 +18,12 @@ class Casillero{
     		ctx.closePath();
     	}
 
+      getColor(){
+        return this.color;
+      }
+
+      setColor(color){
+        this.color = color;
+      }
 
 }
