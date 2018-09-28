@@ -231,16 +231,15 @@ function soltandoMouse(e){
                   y: startY
                 };
                 verificarUbicacionFicha(posActual);
-                console.log(columnaActual);
+              //  console.log(columnaActual);
                 if (columnaActual != 0){
-                   console.log("puse la ficha en la columna ", columnaActual);
+              //     console.log("puse la ficha en la columna ", columnaActual);
                    console.log("indice del arreglo:", indice);
                    if (jugador1){
                            colorFicha = arregloFichasJug1[indice].getColor();
                            console.log("color de la ficha: ", colorFicha);
                            arregloFichasJug1[indice].setPosX = initX;
                            arregloFichasJug1[indice].setPosY = initY;
-                           delete arregloFichasJug1[indice];
                          }
                    else {
                            colorFicha = arregloFichasJug2[indice].getColor();
@@ -249,15 +248,25 @@ function soltandoMouse(e){
 
                    }
                    let estado = insertarEnColumna(columnaActual, colorFicha);
-                   if(!estado){
+                   // console.log("jugador1:", jugador1);
+                   // console.log("estado: ", estado);
+                   // console.log("indice: ",indice);
+                   // console.log(arregloFichasJug1[indice]);
+                    if(!estado){
                      if(jugador1){
-                       arregloFichasJug1[indice].setPosX(initX);
-                       arregloFichasJug1[indice].setPosY(initY);
+                       arregloFichasJug1[indice].setPosX = initX;
+                       arregloFichasJug1[indice].setPosY = initY;
+                       arregloFichasJug1[indice].setDragging = false;
+
                      }
                      else{
-                       arregloFichasJug2[indice].setPosX(initX);
-                       arregloFichasJug2[indice].setPosY(initY);
+                       arregloFichasJug2[indice].setPosX = initX;
+                       arregloFichasJug2[indice].setPosY = initY;
+                       arregloFichasJug1[indice].setDragging = false;
                      }
+                     dragok = false;
+                     alert("La columna esta completa. Elija otra columna");
+                     cambiarTurno();
                    }
                    else{
                      if (jugador1) {
@@ -286,8 +295,18 @@ function soltandoMouse(e){
                       arregloFichasJug2[i].dragging = false;
                   }
           }
-          cambiarTurno();
-
+          let mapa = armarMapaTablero();
+          if (verificarJuegoTerminado(mapa)) {
+             if(jugador1){
+               document.getElementById("jugadorActual").innerHTML = "Felicitaciones Jugador 1 has ganado el juego!!!!";
+             }
+             else {
+               document.getElementById("jugadorActual").innerHTML = "Felicitaciones Jugador 2 has ganado el juego!!!!";
+             }
+          }
+          else{
+               cambiarTurno();
+          }
 }
 
 function moviendoMouse(e){

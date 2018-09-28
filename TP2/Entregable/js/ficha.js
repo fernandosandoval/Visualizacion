@@ -5,7 +5,7 @@ class Ficha{
     		this.posY = y;
         this.radio = radio;
     		this.color = color;
-        let dragging = false;
+        this.dragging = false;
     	}
 
     	draw(ctx) {
@@ -36,5 +36,10 @@ class Ficha{
       getColor(){
         return this.color;
       }
+
+      setDragging(estado){
+        this.dragging = estado;
+      }
+
 
 }

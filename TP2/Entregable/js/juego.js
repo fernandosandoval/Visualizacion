@@ -1,3 +1,12 @@
+var mapa = [
+             [0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0, 0, 0]
+           ];
+
 function insertarEnColumna(columnaActual, colorFicha){
     console.log("columna es ", columnaActual);
     let estado;
@@ -57,9 +66,6 @@ function verificarColumna(id, color){
         }
       }
       return true;
-      // arregloCasilleros.forEach(circle => {
-      //     console.log('casillero numero ', circle.id, ' de color ', circle.color);
-      // });
 
 }
 
@@ -74,31 +80,71 @@ function cambiarTurno(){
       jugador1 = true;
       document.getElementById("jugadorActual").innerHTML = "Jugador 1, es su turno, coloque una ficha amarilla sobre el tablero";
     }
+}
 
 function armarMapaTablero(){
   let indice= 0;
-  var mapa = [
-               [0, 0, 0, 0, 0, 0, 0],
-               [0, 0, 0, 0, 0, 0, 0],
-               [0, 0, 0, 0, 0, 0, 0],
-               [0, 0, 0, 0, 0, 0, 0],
-               [0, 0, 0, 0, 0, 0, 0],
-               [0, 0, 0, 0, 0, 0, 0]
-             ];
-  for (i = 0; i< 5; i++){
-    for (j = 0; j< 6; j++){
+
+  for (i = 0; i<= 5; i++){
+    for (j = 0; j<= 6; j++){
         mapa [i][j] = arregloCasilleros[indice].getColor();
         indice++;
     }
   }
+  console.log(mapa);
   return mapa;
 }
 
+function verificarJuegoTerminado(mapa){
+  for (i = 0; i<= 5; i++){
+    for (j = 0; j<= 6; j++){
+        if(verificarLineaHorizontal(i, j)){
+            return true;
+        }
+        if(verificarLineaVertical(i, j)){
+            return true;
+      }
+    }
+  }
+}
 
-// function verificar4EnLinea(){
-//       let termina = false;
-//       for (x = 0; x < arregloCasilleros.length; x++){
-//          if (arregloCasilleros[x].getColor == "")
-//       }
-// }
+function verificarLineaHorizontal(i, j){
+  let actual = mapa[i][j];
+  let suma = 0;
+  if (actual!="white"){
+    while ((j<=6)){
+      console.log("actual ", actual, "mapa ", mapa[i][j]);
+      if (actual == mapa[i][j]){
+        suma++;
+        if (suma==4){
+          return true;
+        }
+      }
+      else{
+        suma = 0;
+      }
+      j++;
+    }
+    return false;
+  }
+}
+
+function verificarLineaVertical(i, j){
+  let actual = mapa[i][j];
+  let suma = 0;
+  if (actual!="white"){
+        while ((i<=5)){
+          if (actual == mapa[i][j]){
+            suma++;
+            if (suma==4){
+              return true;
+            }
+          }
+          else{
+            suma = 0;
+          }
+          i++;
+        }
+      return false;
+  }
 }
