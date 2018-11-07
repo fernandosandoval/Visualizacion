@@ -33,7 +33,7 @@ function mostrarBalas(){
 	for (var i=0; i<balas.length; i++){
 		output += "<div class='bala' style='top:"+balas[i].y+"px; left:"+balas[i].x+"px;'></div>"
 	}
-	document.getElementById('bullets').innerHTML = output;
+	document.getElementById('balas').innerHTML = output;
 }
 
 function moverBalas(){
@@ -41,7 +41,7 @@ function moverBalas(){
 		balas[i].y -= 5;
 
 		if(balas[i].y < 0){
-			balas[i] = balas[bullets.length-1];
+			balas[i] = balas[balas.length-1];
 			balas.pop();
 			console.log(balas);
 		}
@@ -73,24 +73,24 @@ function detectarColision(){
 	}
 }
 
-// function heroCollision(){
-// 	for(var j=0; j<enemigo.length; j++){
-//
-// 		if(Math.abs(hero.x - enemigo[j].x) < 10 &&
-// 		Math.abs(hero.y - enemigo[j].y) < 10) {
-// 			console.log('hero and enemigo', j, 'collided');
-// 			score -= 500;
-// 		}
-// 	}
-// 	for(var k=0; k<otroenemigo.length; k++){
-//
-// 		if(Math.abs(hero.x - otroenemigo[k].x) < 10 &&
-// 		Math.abs(hero.y - otroenemigo[k].y) < 10) {
-// 			console.log('hero and otroenemigo', k, 'collided');
-// 			score -= 500;
-//   	}
-//   }
-// }
+ function choqueAvion(){
+	 	for(var j=0; j<enemigo.length; j++){
+
+ 		if(Math.abs(avion.x - enemigo[j].x) < 10 &&
+	 		Math.abs(avion.y - enemigo[j].y) < 10) {
+	 			console.log('avion y enemigo', j, 'chocaron');
+	 			puntos -= 1000;
+	 		}
+	 	}
+	 	for(var k=0; k<otroenemigo.length; k++){
+
+	 		if(Math.abs(avion.x - otroenemigo[k].x) < 10 &&
+	 		Math.abs(avion.y - otroenemigo[k].y) < 10) {
+	 			console.log('avion y otroenemigo', k, 'chocaron');
+	 			score -= 1500;
+	   	}
+	   }
+	 }
 
 function moverEnemigo(){
 	for(var i=0; i<enemigo.length; i++){
@@ -138,7 +138,7 @@ document.onkeydown = function(a){
 		avion.y += 10;
 	}
 	if(a.keyCode == 32){
-		balas.push({x: hero.x+8 , y: hero.y-15  });
+		balas.push({x: avion.x+8 , y: avion.y-15  });
 	  console.log(balas);
 		mostrarBalas();
 	}

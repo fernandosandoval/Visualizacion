@@ -29,7 +29,7 @@ body{
       repeat;
   background-position:
       0px 0px;
-  animation: parallax-background linear 40s infinite;
+  animation: parallax-background linear 60s infinite;
 }
 
 #avion{
@@ -39,6 +39,7 @@ body{
 	height:28px;
 	position:absolute;
 }
+
 .enemigo{
 	background: url('spritesheet.gif');
 	background-position: -30px -10px;
@@ -46,6 +47,7 @@ body{
 	height:28px;
 	position:absolute;
 }
+
 .otroenemigo{
 	background: url('spritesheet.gif');
 	background-position: -185px -10px;
@@ -53,6 +55,7 @@ body{
 	height:28px;
 	position:absolute;
 }
+
 .bala{
 	background: url('spritesheet.gif');
 	background-position: -185px -400px;
@@ -60,6 +63,7 @@ body{
 	height:18px;
 	position:absolute;
 }
+
 .explosion{
 	background: url('spritesheet.gif');
 	background-position: -145px -30px;
@@ -67,13 +71,13 @@ body{
 	height:30px;
 	position:absolute;
 }
+
 #puntos{
 	position:absolute;
-	border:10px solid red;
 	top:20px;
 	left:800px;
 	background-color:white;
 	padding:10px;
 	font-size:30px;
-	font-family: Arial;
+	font-family: Tahoma;
 }
