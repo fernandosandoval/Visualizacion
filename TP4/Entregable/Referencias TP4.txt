@@ -1,0 +1,4 @@
+Referencias:
+https://css-tricks.com/creating-a-css-sliding-background-effect/
+https://www.the-art-of-web.com/css/css-animation/
+https://www.sounds-resource.com/arcade/1942/sound/9101/
