@@ -5,40 +5,33 @@
 body{
 	background-color:black;
 }
-#game {
-    position: absolute;
-    overflow: hidden;
-    float: left;
-    width: 700px;
-    height: 100%;
-    background-image: url("background.png"),
-        background-size: auto;
-
-    background-repeat:
-        repeat;
-    background-position:
-        0px 0px;
-}
-
-.game-bg-animation {
-    animation: parallax-background linear 5s infinite;
-}
 
 @keyframes parallax-background {
     from {
-        background-position: 0px 0px, 0px 0px, 0px 0px;
+        background-position: 0px 0px;
     }
 
     to {
-        background-position: 0px 2100px, 0px 1400px, 0px 700px;
+        background-position: 0px 700px;
     }
 }
 
-#container{
-	background: url('background.png');
+#fondo{
+	background: url('background2.png');
 	width:1000px;
-	height:550px;
+	height:570px;
+  position: absolute;
+  overflow: hidden;
+  float: center;
+  background-image: url("background.png"),
+      background-size: auto;
+  background-repeat:
+      repeat;
+  background-position:
+      0px 0px;
+  animation: parallax-background linear 40s infinite;
 }
+
 #avion{
 	background: url('spritesheet.gif');
 	background-position: -85px -180px;
