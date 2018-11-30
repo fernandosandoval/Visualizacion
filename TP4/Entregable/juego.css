@@ -16,14 +16,46 @@ body{
     }
 }
 
-#fondo{
-	background: url('background2.png');
+@keyframes move-to-left {
+  25%{
+    transform: rotate(-5deg)
+  }
+  50%{
+    transform: rotate(-10deg)
+  }
+  75%{
+    transform: rotate(-15deg)
+  }
+  100%{
+    transform: rotate(-20deg);
+  }
+}
+
+@keyframes move-to-right {
+  25%{
+    transform: rotate(5deg)
+  }
+  50%{
+    transform: rotate(10deg)
+  }
+  75%{
+    transform: rotate(15deg)
+  }
+  100%{
+    transform: rotate(20deg)
+  }
+}
+
+
+
+#container{
+	background: url('images/background2.png');
 	width:1000px;
 	height:570px;
   position: absolute;
   overflow: hidden;
   float: center;
-  background-image: url("background.png"),
+  background-image: url("images/background2.png"),
       background-size: auto;
   background-repeat:
       repeat;
@@ -32,52 +64,69 @@ body{
   animation: parallax-background linear 60s infinite;
 }
 
-#avion{
-	background: url('spritesheet.gif');
-	background-position: -85px -180px;
-	width:28px;
-	height:28px;
-	position:absolute;
+
+
+
+#hero{
+		background: url('images/spritesheet.gif');
+		background-position: -85px -180px;
+		width:28px;
+		height:28px;
+		position:absolute;
+	}
+
+.enemy1{
+		background: url('images/spritesheet.gif');
+		background-position: -30px -10px;
+		width:28px;
+		height:28px;
+		position:absolute;
+	}
+
+.specialenemies1{
+		background: url('images/spritesheet.gif');
+		background-position: -150px -10px;
+		width:25px;
+		height:17px;
+		position:absolute;
+    }
+
+.bullets{
+		background: url('images/spritesheet.gif');
+		background-position: -185px -400px;
+		width:18px;
+		height:18px;
+		position:absolute;
+	}
+
+.explosions1{
+        background: url('images/explosion.gif');
+        background-size: cover;
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        top: 650px;
+        left: 50px;
+        z-index: 9999999999;
+    }
+
+#score{
+		position:absolute;
+		border:10px solid red;
+		top:20px;
+		left:800px;
+		background-color:white;
+		padding:10px;
+		font-size:30px;
+		font-family: Arial;
+	}
+
+.to-left {
+    animation: move-to.left ease-out 0.01s;
+    animation-fill-mode: forwards;
 }
 
-.enemigo{
-	background: url('spritesheet.gif');
-	background-position: -30px -10px;
-	width:28px;
-	height:28px;
-	position:absolute;
-}
-
-.otroenemigo{
-	background: url('spritesheet.gif');
-	background-position: -185px -10px;
-	width:28px;
-	height:28px;
-	position:absolute;
-}
-
-.bala{
-	background: url('spritesheet.gif');
-	background-position: -185px -400px;
-	width:18px;
-	height:18px;
-	position:absolute;
-}
-
-.explosion{
-	background: url('spritesheet.gif');
-	background-position: -145px -30px;
-	width:30px;
-	height:30px;
-	position:absolute;
-}
-
-#puntos{
-	position:absolute;
-	top:20px;
-	left:800px;
-	background-color:white;
-	padding:10px;
-	font-size:30px;
-	font-family: Tahoma;
+.to-right {
+    animation: move-to-right ease-out 0.01s;
+    animation-fill-mode: forwards;
 }
